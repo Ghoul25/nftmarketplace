@@ -4,6 +4,7 @@ import { useDropzone } from 'react-dropzone';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
 
+import { NFTContext } from '../context/NFTContext';
 import { Button, Input } from '../components';
 import images from '../assets';
 
@@ -11,9 +12,15 @@ const CreateNFT = () => {
   const [fileUrl, setFileUrl] = useState(null);
   const [formInput, setFormInput] = useState({ price: '', name: '', description: '' });
   const { theme } = useTheme();
+  const { uploadToIPFS, createNFT } = useContext(NFTContext);
+  const router = useRouter();
 
-  const onDrop = useCallback(() => {
-    // upload to ipfs
+  const onDrop = useCallback(async (acceptedFile) => {
+    const url = await uploadToIPFS(acceptedFile[0]);
+
+    console.log({ url });
+
+    setFileUrl(url);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
@@ -29,8 +36,6 @@ const CreateNFT = () => {
     ${isDragReject && ' border-file-reject'}`
   ), [isDragActive, isDragAccept, isDragReject]);
 
-  console.log(formInput);
-
   return (
     <div className="flex justify-center sm:px-4 p-12">
       <div className="w-3/5 md:w-full">
@@ -39,8 +44,8 @@ const CreateNFT = () => {
         <div className="mt-16">
           <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-xl">Upload File</p>
           <div className="mt-4">
-            <div {...getRootProps} className={fileStyle}>
-              <input {...getInputProps} />
+            <div {...getRootProps()} className={fileStyle}>
+              <input {...getInputProps()} />
               <div className="flexCenter flex-col text-center">
                 <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-xl">JPG, PNG, GIF, SVG, WEBM. Max 100mb.</p>
 
@@ -89,7 +94,7 @@ const CreateNFT = () => {
         />
 
         <div className="mt-7 w-full flex justify-end">
-          <Button btnName="Create NFT" className="rounded-xl" handleClick={() => {}} />
+          <Button btnName="Create NFT" className="rounded-xl" handleClick={() => createNFT(formInput, fileUrl, router)} />
         </div>
       </div>
     </div>
