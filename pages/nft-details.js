@@ -96,6 +96,7 @@ const NFTDetails = () => {
               <Button
                 btnName={`Buy for ${nft.price} ${nftCurrency}`}
                 classStyles="mr-5 sm:mr-0 rounded-xl"
+                handleClick={() => setPaymentModal(true)}
               />
             )}
         </div>
@@ -115,11 +116,11 @@ const NFTDetails = () => {
             <Button
               btnName="Cancel"
               classStyles="rounded-xl"
-              handleClick={() => {}}
+              handleClick={() => setPaymentModal(false)}
             />
           </div>
         )}
-        handleClick={() => {}}
+        handleClose={() => setPaymentModal(false)}
       />
       )}
     </div>
