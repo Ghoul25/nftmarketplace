@@ -73,7 +73,7 @@ const Navbar = () => {
         <Link href="/">
           <div className="flexCenter md:hidden cursor-pointer">
             <Image src={images.logo02} objectFit="contain" width={32} height={32} alt="logo" />
-            <p className="dark:text-white text-nft-black-1 font-semibold text-lg ml-1">Crypt</p>
+            <p className="dark:text-white text-nft-black-1 font-semibold text-lg ml-1">NiftyLoco</p>
           </div>
         </Link>
         <Link href="/">
