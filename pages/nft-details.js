@@ -21,7 +21,7 @@ const PaymentBodyCmp = ({ nft, nftCurrency }) => (
         </div>
         <div className="flexCenterStart flex-col ml-5">
           <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-sm minlg:text-xl">{shortenAddress(nft.seller)}</p>
-          <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-sm minlg:text-xl">{nft.name}</p>
+          <p className="font-poppins dark:text-white text-nft-black-1 text-sm minlg:text-xl font-normal">{nft.name}</p>
         </div>
       </div>
 
@@ -32,7 +32,7 @@ const PaymentBodyCmp = ({ nft, nftCurrency }) => (
 
     <div className="flexBetween mt-10">
       <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-base minlg:text-xl">Total</p>
-      <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-base minlg:text-xl">{nft.price} <span className="font-semibold">{nftCurrency}</span></p>
+      <p className="font-poppins dark:text-white text-nft-black-1 text-base minlg:text-xl font-normal">{nft.price} <span className="font-semibold">{nftCurrency}</span></p>
 
     </div>
   </div>
@@ -97,7 +97,7 @@ const NFTDetails = () => {
         <div className="flex flex-row sm:flex-col mt-10">
           {currentAccount === nft.seller.toLowerCase()
             ? (
-              <p className="font-poppins dark:text-white text-nft-black-1 text-base font-normal border-gray p-2">
+              <p className="font-poppins dark:text-white text-nft-black-1 font-normal text-base border border-gray p-2">
                 You cannot buy your own NFT
               </p>
             ) : currentAccount === nft.owner.toLowerCase()
