@@ -5,14 +5,14 @@ import Image from 'next/image';
 import { useTheme } from 'next-themes';
 
 import { NFTContext } from '../context/NFTContext';
-import { Button, Input } from '../components';
+import { Button, Input, Loader } from '../components';
 import images from '../assets';
 
 const CreateNFT = () => {
   const [fileUrl, setFileUrl] = useState(null);
   const [formInput, setFormInput] = useState({ price: '', name: '', description: '' });
   const { theme } = useTheme();
-  const { uploadToIPFS, createNFT } = useContext(NFTContext);
+  const { isLoadingNFT, uploadToIPFS, createNFT } = useContext(NFTContext);
   const router = useRouter();
 
   const onDrop = useCallback(async (acceptedFile) => {
@@ -29,12 +29,21 @@ const CreateNFT = () => {
     maxSize: 5000000,
   });
 
-  const fileStyle = useMemo(() => (
-    `dark:bg-nft-black-1 bg-white border dark:border-white border-nft-gray-2 flex flex-col items-center p-5 rounded-sm border-dashed
+  const fileStyle = useMemo(
+    () => `dark:bg-nft-black-1 bg-white border dark:border-white border-nft-gray-2 flex flex-col items-center p-5 rounded-sm border-dashed
     ${isDragActive && ' border-file-active'}
     ${isDragAccept && ' border-file-accept'}
-    ${isDragReject && ' border-file-reject'}`
-  ), [isDragActive, isDragAccept, isDragReject]);
+    ${isDragReject && ' border-file-reject'}`,
+    [isDragActive, isDragAccept, isDragReject],
+  );
+
+  if (isLoadingNFT) {
+    return (
+      <div className="flexStart min-h-screen">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center sm:px-4 p-12">
@@ -50,27 +59,24 @@ const CreateNFT = () => {
                 <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-xl">JPG, PNG, GIF, SVG, WEBM. Max 100mb.</p>
 
                 <div className="my-12 w-full flex justify-center">
-                  <Image
-                    src={images.upload}
-                    width={100}
-                    height={100}
-                    objectFit="contain"
-                    alt="file upload"
-                    className={theme === 'light' ? 'filter invert' : undefined}
-                  />
+                  {fileUrl ? (
+                    <img src={fileUrl} alt="Asset_file" className="max-w-full max-h-60" />
+                  ) : (
+                    <Image
+                      src={images.upload}
+                      width={100}
+                      height={100}
+                      objectFit="contain"
+                      alt="file upload"
+                      className={theme === 'light' ? 'filter invert' : undefined}
+                    />
+                  )}
                 </div>
 
                 <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-sm">Drag and Drop File</p>
                 <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-sm mt-2">or Browse media on your device</p>
               </div>
             </div>
-            {fileUrl && (
-              <aside>
-                <div>
-                  <img src={fileUrl} alt="Asset_file" />
-                </div>
-              </aside>
-            )}
           </div>
         </div>
 
